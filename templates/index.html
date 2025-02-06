@@ -6,18 +6,11 @@
 
     <p>Welcome to Movie Review Database.</p>
 
-
-    <!-- -------------------- -->
-    <!-- New code starts here -->
-    <!-- -------------------- -->
     {% if session['username'] %}
         <br>
         <p>Hello {{ session['username'] }}</p>
         <a href="/add"><button>Add review</button></a>
     {% endif %}
-    <!-- -------------------- -->
-    <!-- New code ends here   -->
-    <!-- -------------------- -->
 
 </div>
 

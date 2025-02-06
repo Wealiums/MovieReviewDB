@@ -14,15 +14,9 @@ def GetAllReviews():
     # Connect, query all reviews and then return the data
     db = GetDB()
    
-##################################
-### New code starts here
-##################################
     reviews = db.execute("""SELECT Reviews.date, Reviews.title, Reviews.rating, Reviews.review, Users.username
                             FROM Reviews JOIN Users ON Reviews.user_id = Users.id
                             ORDER BY date DESC""").fetchall()
-##################################
-### New code ends here
-##################################
 
     db.close()
     return reviews
@@ -58,9 +52,6 @@ def RegisterUser(username, password):
 
     return True
 
-##################################
-### New code starts here
-##################################
 def AddReview(user_id, date, title, rating, review):
    
     # Check if any boxes were empty
@@ -75,6 +66,9 @@ def AddReview(user_id, date, title, rating, review):
 
     return True
 
-##################################
-### New code ends here
-##################################
+def deleteReview(id):
+
+    conn = GetDB()
+    conn.execute('DELETE FROM posts WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()

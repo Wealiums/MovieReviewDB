@@ -50,21 +50,12 @@ def Register():
        
     return render_template("register.html")
 
-##################################
-### New code starts here
-##################################
 @app.route("/add", methods=["GET","POST"])
 def Add():
 
-##################################
-### New code starts here
-##################################
     # Check if they are logged in first
     if session.get('username') == None:
         return redirect("/")
-##################################
-### New code ends here
-##################################
 
     # Did they click submit?
     if request.method == "POST":
@@ -79,9 +70,11 @@ def Add():
 
     return render_template("add.html")
 
+@app.route('/<int:id>/delete', methods=('POST',))
+def delete(id):
 
-##################################
-### New code ends here
-##################################
+    db.delete(id)
+     
+    return redirect("/myreviews") 
 
 app.run(debug=True, port=5000)
