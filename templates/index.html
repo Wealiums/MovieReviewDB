@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <p>Welcome to Movie Review Database.</p>
+
+
+    <!-- -------------------- -->
+    <!-- New code starts here -->
+    <!-- -------------------- -->
+    {% if session['username'] %}
+        <br>
+        <p>Hello {{ session['username'] }}</p>
+        <a href="/add"><button>Add review</button></a>
+    {% endif %}
+    <!-- -------------------- -->
+    <!-- New code ends here   -->
+    <!-- -------------------- -->
+
+</div>
+
+<br>
+
+<table class="review_table">
+
+    <thead>
+        <th>Date</th>
+        <th>User who reviewed</th>
+        <th>Title</th>
+        <th>Rating</th>
+        <th>Review</th>
+    </thead>
+
+    <tbody>
+        {% for review in reviews %}
+        <tr>
+            <td>{{ review['date'] }}</td>
+            <td>{{ review['username'] }}</td>
+            <td>{{ review['title'] }}</td>
+            <td>{{ review['rating'] }}</td>
+            <td>{{ review['review'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add a new review</h2>
+<form action="/add" method="post">
+    <label>Date: </label>
+    <input type="date" name="date" id="date">
+    <label>Title: </label>
+    <input type="text" name="title" id="title">
+    <label>Rating: </label>
+    <input type="number" name="rating" id="rating">
+    <label>Review: </label>
+    <input type="text" name="review" id="review">
+    <input type="submit" value="Add review">
+</form>
+{% endblock %}
