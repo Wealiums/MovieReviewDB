@@ -4,13 +4,13 @@
 <h2>Add a new review</h2>
 <form action="/add" method="post">
     <label>Date: </label>
-    <input type="date" name="date" id="date">
+    <input type="date" name="date" required>
     <label>Title: </label>
-    <input type="text" name="title" id="title">
+    <input type="text" name="title" required>
     <label>Rating: </label>
-    <input type="number" name="rating" id="rating">
+    <input type="number" name="rating" min="1" max="5" required>
     <label>Review: </label>
-    <input type="text" name="review" id="review">
+    <input type="text" name="review" required>
     <input type="submit" value="Add review">
 </form>
 {% endblock %}

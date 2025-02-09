@@ -10,14 +10,11 @@ def GetDB():
     return db
 
 def GetAllReviews():
-
     # Connect, query all reviews and then return the data
     db = GetDB()
-   
-    reviews = db.execute("""SELECT Reviews.date, Reviews.title, Reviews.rating, Reviews.review, Users.username
+    reviews = db.execute("""SELECT Reviews.date, Reviews.title, Reviews.rating, Reviews.review, Users.username, Reviews.id
                             FROM Reviews JOIN Users ON Reviews.user_id = Users.id
-                            ORDER BY date DESC""").fetchall()
-
+                            ORDER BY Reviews.date DESC, Reviews.id DESC""").fetchall()
     db.close()
     return reviews
 
@@ -53,22 +50,91 @@ def RegisterUser(username, password):
     return True
 
 def AddReview(user_id, date, title, rating, review):
-   
     # Check if any boxes were empty
-    if date is None or title is None or review is None:
+    if not date or not title or not review:
         return False
-   
+
+    # Validate rating
+    rating = int(rating)
+    if rating < 1 or rating > 5:
+        return False
+
     # Get the DB and add the reviews
     db = GetDB()
     db.execute("INSERT INTO Reviews(user_id, date, title, rating, review) VALUES (?, ?, ?, ?, ?)",
                (user_id, date, title, rating, review))
     db.commit()
+    db.close()
 
     return True
 
-def deleteReview(id):
+def DeleteReview(user_id, review_id):
+    print(f"DeleteReview called with user_id: {user_id}, review_id: {review_id}")
+    # Connect to the database
+    db = GetDB()
 
-    conn = GetDB()
-    conn.execute('DELETE FROM posts WHERE id = ?', (id,))
-    conn.commit()
-    conn.close()
+    # Check if the review exists and belongs to the user
+    review = db.execute("SELECT * FROM Reviews WHERE id = ? AND user_id = ?", (review_id, user_id)).fetchone()
+
+    if review is None:
+        # Review does not exist or does not belong to the user
+        print("Review not found or does not belong to the user.")
+        return False
+
+    # Delete the review
+    db.execute("DELETE FROM Reviews WHERE id = ?", (review_id,))
+    db.commit()
+    db.close()
+    print("Review deleted from database.")
+    return True
+
+def EditReview(user_id, review_id, date, title, rating, review):
+    # Check if any boxes were empty
+    if date is None or title is None or review is None:
+        return False
+
+    # Validate rating
+    rating = int(rating)
+    if rating < 1 or rating > 5:
+        return False
+
+    # Get the DB and update the review
+    db = GetDB()
+    db.execute("""UPDATE Reviews 
+                  SET date = ?, title = ?, rating = ?, review = ? 
+                  WHERE id = ? AND user_id = ?""",
+               (date, title, rating, review, review_id, user_id))
+    db.commit()
+    db.close()
+
+    return True
+
+def SearchReviews(query):
+    db = GetDB()
+    reviews = db.execute("""SELECT Reviews.date, Reviews.title, Reviews.rating, Reviews.review, Users.username, Reviews.id
+                            FROM Reviews JOIN Users ON Reviews.user_id = Users.id
+                            WHERE Users.username LIKE ? OR Reviews.title LIKE ?
+                            ORDER BY Reviews.date DESC, Reviews.id DESC""", ('%' + query + '%', '%' + query + '%')).fetchall()
+    db.close()
+    return reviews
+
+def DeleteAccount(username, password):
+    db = GetDB()
+    
+    # Verify the username and password
+    user = db.execute("SELECT * FROM Users WHERE username=?", (username,)).fetchone()
+    if user is None or not check_password_hash(user['password'], password):
+        return False
+
+    user_id = user['id']
+    
+    # Delete all reviews by the user
+    db.execute("DELETE FROM Reviews WHERE user_id = ?", (user_id,))
+    
+    # Delete the user account
+    db.execute("DELETE FROM Users WHERE id = ?", (user_id,))
+    
+    db.commit()
+    db.close()
+    
+    return True

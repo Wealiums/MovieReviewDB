@@ -12,6 +12,11 @@
         <a href="/add"><button>Add review</button></a>
     {% endif %}
 
+    <form action="/" method="get">
+        <input type="text" name="query" placeholder="Search by user or title">
+        <input type="submit" value="Search">
+    </form>
+
 </div>
 
 <br>
@@ -24,6 +29,7 @@
         <th>Title</th>
         <th>Rating</th>
         <th>Review</th>
+        <th>Actions</th>
     </thead>
 
     <tbody>
@@ -34,6 +40,12 @@
             <td>{{ review['title'] }}</td>
             <td>{{ review['rating'] }}</td>
             <td>{{ review['review'] }}</td>
+            <td>
+                <form action="/delete/{{ review['id'] }}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+                <a href="/edit/{{ review['id'] }}"><button>Edit</button></a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

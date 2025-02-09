@@ -7,7 +7,7 @@
 }
 
 body {
-    background: #fdfdfd;
+    background: #fdf5e6;  /* Slightly lighter bone */
     font-family: "Nunito", sans-serif;
     font-size: 1rem;
 }
@@ -22,9 +22,16 @@ main {
 .banner {
     padding: 60px;
     text-align: center;
-    background: #1abc9c;
+    background: #b22222;  /* Movie theater red */
     color: white;
     font-size: 3em;
+}
+
+.banner img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 nav {
@@ -36,7 +43,6 @@ nav {
 nav a {
     display: inline-block;
     color: #f2f2f2;
-
     padding: 14px 16px;
     text-decoration: none;
     font-size: 1.2em;
@@ -48,22 +54,23 @@ nav a:hover {
 }
 
 nav a.active {
-    background-color: #04AA6D;
+    background-color: #8b0000;  /* Darker movie theater red */
     color: white;
 }
 
 .container {
-
+    padding: 1rem;
 }
 
 .review_table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    border: 1px solid black;  /* Match thickness of inside lines */
 }
 
 .review_table td, .review_table th {
-    border: 1px solid #ddd;
+    border: 1px solid black;  /* Match thickness of inside lines */
     padding: 8px;
 }
 
@@ -75,7 +82,7 @@ nav a.active {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #1abc9c;
+    background-color: #b22222;  /* Movie theater red */
     color: white;
 }
 
@@ -89,30 +96,96 @@ input[type=text], input[type="password"], input[type="date"], input[type="number
     box-sizing: border-box;
 }
 
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 input[type=submit] {
     width: 100%;
-    background-color: #4CAF50;
+    background-color: #3cb371;  /* Medium sea green */
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
-    border: none;
+    border: 2px solid #4682b4;  /* Steel blue */
     border-radius: 4px;
     cursor: pointer;
     font-size: 1.05em;
 }
 
 input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #2e8b57;  /* Darker medium sea green */
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #3cb371;  /* Medium sea green */
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
-    border: none;
+    border: 2px solid #4682b4;  /* Steel blue */
     border-radius: 4px;
     cursor: pointer;
     font-size: 1.05em;
+}
+
+button:hover {
+    background-color: #2e8b57;  /* Darker medium sea green */
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 2em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .banner {
+        font-size: 2em;
+        padding: 30px;
+    }
+
+    nav a {
+        padding: 10px 12px;
+        font-size: 1em;
+    }
+
+    .review_table th, .review_table td {
+        padding: 6px;
+    }
+
+    input[type=submit], button {
+        padding: 10px 14px;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        font-size: 1.5em;
+        padding: 20px;
+    }
+
+    nav a {
+        padding: 8px 10px;
+        font-size: 0.9em;
+    }
+
+    .review_table th, .review_table td {
+        padding: 4px;
+    }
+
+    input[type=submit], button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
 }
 
