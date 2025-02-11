@@ -113,8 +113,8 @@ def SearchReviews(query):
     db = GetDB()
     reviews = db.execute("""SELECT Reviews.date, Reviews.title, Reviews.rating, Reviews.review, Users.username, Reviews.id
                             FROM Reviews JOIN Users ON Reviews.user_id = Users.id
-                            WHERE Users.username LIKE ? OR Reviews.title LIKE ?
-                            ORDER BY Reviews.date DESC, Reviews.id DESC""", ('%' + query + '%', '%' + query + '%')).fetchall()
+                            WHERE Users.username LIKE ? OR Reviews.title LIKE ?  
+                            ORDER BY Reviews.date DESC, Reviews.id DESC""", ('%' + query + '%', '%' + query + '%')).fetchall() # Displays all reviews where theres a match from the inputed search and the user name/ title
     db.close()
     return reviews
 

@@ -4,14 +4,15 @@ const CURRENT_CACHE = `main-${CACHE_VERSION}`;
 // Routes to be cached
 const cacheFiles = [
     "/",
-    "css/style.css",
-    "js/app.js",
-    "images/favicon.png",
-    "icons/icon-128x128.png",
-    "icons/icon-192x192.png",
-    "icons/icon-384x384.png",
-    "icons/icon-512x512.png",
-    "icons/logo.png",
+    "static/css/style.css",
+    "static/js/app.js",
+    "static/images/favicon.png",
+    "static/icons/icon-128x128.png",
+    "static/icons/icon-192x192.png",
+    "static/icons/icon-384x384.png",
+    "static/icons/icon-512x512.png",
+    "static/icons/logo.png",
+    "templates/offline.html"  // Update the path to the offline page
 ];
 
 // Removes previous service worker
@@ -32,7 +33,7 @@ self.addEventListener('activate', evt =>
 // Downloads the routes to be cached
 self.addEventListener("install", (event) => {
     event.waitUntil(
-        caches.open(cacheFiles)
+        caches.open(CURRENT_CACHE)
             .then((cache) => {
                 console.log("Caching assets during install");
                 return cache.addAll(cacheFiles);
@@ -62,7 +63,7 @@ const fromCache = request =>
         .then(cache =>
             cache
                 .match(request)
-                .then(matching => matching || cache.match('/offline/'))
+                .then(matching => matching || cache.match('templates/offline.html'))
         );
 
 // Cache the current page for offline 
