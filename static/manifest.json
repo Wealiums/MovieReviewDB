@@ -61,14 +61,14 @@
             "src": "static/icons/desktop_screenshot.png",
             "sizes": "1920x1080",
             "type": "image/png",
-            "label": ""
+            "label": "Desktop Screenshot"
         },
         {
             "src": "static/icons/mobile_screenshot.png",
             "sizes": "1080x1920",
             "type": "image/png",
             "form_factor": "wide",
-            "label": ""
+            "label": "Mobile Screenshot"
         }
     ]
 }

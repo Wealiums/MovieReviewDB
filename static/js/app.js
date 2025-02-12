@@ -1,8 +1,9 @@
+// Loads the service worker
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
         navigator.serviceWorker
-            .register("static/js/serviceworker.js")
-            .then((res) => console.log("Service worker registered"))
-            .catch((err) => console.log("Service worker not registered", err));
+            .register("../serviceworker.js") // Ensure the path is correct
+            .then((res) => console.log("Service Worker registered:", res))
+            .catch((err) => console.log("Service Worker not registered:", err));
     });
 }

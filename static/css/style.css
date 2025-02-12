@@ -20,6 +20,7 @@ main {
 }
 
 .banner {
+    width: 100%;  /* Ensure the banner spans the full width */
     padding: 60px;
     text-align: center;
     background: #b22222;  /* Movie theater red */
@@ -147,7 +148,7 @@ header {
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 1080px) {
     .banner {
         font-size: 2em;
         padding: 30px;

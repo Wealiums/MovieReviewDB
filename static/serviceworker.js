@@ -11,11 +11,12 @@ const cacheFiles = [
     "static/icons/icon-192x192.png",
     "static/icons/icon-384x384.png",
     "static/icons/icon-512x512.png",
-    "static/icons/logo.png",
-    "templates/offline.html"  // Update the path to the offline page
+    "static/icons/desktop_screenshot.png",
+    "static/icons/mobile_screenshot.png",
+    "static/offline.html"
 ];
 
-// Removes previous service worker
+// Deletes previously registered service workers on activation
 self.addEventListener('activate', evt =>
     evt.waitUntil(
         caches.keys().then(cacheNames => {
@@ -30,10 +31,10 @@ self.addEventListener('activate', evt =>
     )
 );
 
-// Downloads the routes to be cached
+// Downloads the routes desired to be cached on install
 self.addEventListener("install", (event) => {
     event.waitUntil(
-        caches.open(CURRENT_CACHE)
+        caches.open(cacheFiles)
             .then((cache) => {
                 console.log("Caching assets during install");
                 return cache.addAll(cacheFiles);
@@ -45,7 +46,7 @@ self.addEventListener("install", (event) => {
     );
 });
 
-// Gets resources from the network
+// Fetches resources from the network
 const fromNetwork = (request, timeout) =>
     new Promise((fulfill, reject) => {
         const timeoutId = setTimeout(reject, timeout);
@@ -56,17 +57,17 @@ const fromNetwork = (request, timeout) =>
         }, reject);
     });
 
-// Gets resources from browser cache
+// Fetches resources from browser cache when needed
 const fromCache = request =>
     caches
         .open(CURRENT_CACHE)
         .then(cache =>
             cache
                 .match(request)
-                .then(matching => matching || cache.match('templates/offline.html'))
+                .then(matching => matching || cache.match('/offline/'))
         );
 
-// Cache the current page for offline 
+// Cache the currently used page for offline use
 const update = request =>
     caches
         .open(CURRENT_CACHE)
@@ -74,7 +75,7 @@ const update = request =>
             fetch(request).then(response => cache.put(request, response))
         );
 
-// Get information from the network, if offline get from cache
+// Fetch information from the network, if it can't (offline) fetch from cache
 self.addEventListener('fetch', evt => {
     const requestUrl = new URL(evt.request.url);
 
