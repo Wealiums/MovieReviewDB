@@ -41,3 +41,5 @@
 --                   (4, "2024-11-03", 3, "The Amazing Spiderman 2", "Green Gooblin"),
 --                   (5, "2024-11-04", 5, "Spiderman 2", "Peak superheroism"),
 --                   (5, "2024-11-05", 4, "Spiderman 3", "Good Movie");
+
+-- DELETE FROM Users WHERE id = 8;

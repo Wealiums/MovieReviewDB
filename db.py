@@ -2,11 +2,9 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 def GetDB():
-
     # Connect to the database and return the connection object
     db = sqlite3.connect(".database/mr.db")
     db.row_factory = sqlite3.Row
-
     return db
 
 def GetAllReviews():
@@ -19,34 +17,33 @@ def GetAllReviews():
     return reviews
 
 def CheckLogin(username, password):
-
     db = GetDB()
-
     # Ask the database for a single user matching the provided name
     user = db.execute("SELECT * FROM Users WHERE username=?", (username,)).fetchone()
-
     # Do they exist?
     if user is not None:
         # OK they exist, is their password correct
         if check_password_hash(user['password'], password):
             # They got it right, return their details
             return user
-       
     # If we get here, the username or password failed.
     return None
 
 def RegisterUser(username, password):
-
     # Check if they gave us a username and password
     if username is None or password is None:
         return False
 
-    # Attempt to add them to the database
     db = GetDB()
+    # Check if the username already exists
+    existing_user = db.execute("SELECT * FROM Users WHERE username=?", (username,)).fetchone()
+    if existing_user:
+        return False  # Username already exists
+
+    # Attempt to add them to the database
     hash = generate_password_hash(password)
     db.execute("INSERT INTO Users(username, password) VALUES(?, ?)", (username, hash,))
     db.commit()
-
     return True
 
 def AddReview(user_id, date, title, rating, review):
@@ -65,22 +62,18 @@ def AddReview(user_id, date, title, rating, review):
                (user_id, date, title, rating, review))
     db.commit()
     db.close()
-
     return True
 
 def DeleteReview(user_id, review_id):
     print(f"DeleteReview called with user_id: {user_id}, review_id: {review_id}")
     # Connect to the database
     db = GetDB()
-
     # Check if the review exists and belongs to the user
     review = db.execute("SELECT * FROM Reviews WHERE id = ? AND user_id = ?", (review_id, user_id)).fetchone()
-
     if review is None:
         # Review does not exist or does not belong to the user
         print("Review not found or does not belong to the user.")
         return False
-
     # Delete the review
     db.execute("DELETE FROM Reviews WHERE id = ?", (review_id,))
     db.commit()
@@ -106,7 +99,6 @@ def EditReview(user_id, review_id, date, title, rating, review):
                (date, title, rating, review, review_id, user_id))
     db.commit()
     db.close()
-
     return True
 
 def SearchReviews(query):
@@ -120,21 +112,15 @@ def SearchReviews(query):
 
 def DeleteAccount(username, password):
     db = GetDB()
-    
     # Verify the username and password
     user = db.execute("SELECT * FROM Users WHERE username=?", (username,)).fetchone()
     if user is None or not check_password_hash(user['password'], password):
         return False
-
     user_id = user['id']
-    
     # Delete all reviews by the user
     db.execute("DELETE FROM Reviews WHERE user_id = ?", (user_id,))
-    
     # Delete the user account
     db.execute("DELETE FROM Users WHERE id = ?", (user_id,))
-    
     db.commit()
     db.close()
-    
     return True
