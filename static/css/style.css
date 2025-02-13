@@ -7,7 +7,7 @@
 }
 
 body {
-    background: #fdf5e6;  /* Slightly lighter bone */
+    background: #B5CEDB;  /* Outer background color */
     font-family: "Nunito", sans-serif;
     font-size: 1rem;
 }
@@ -75,7 +75,9 @@ nav a.active {
     padding: 8px;
 }
 
-.review_table tr:nth-child(even){background-color: #f2f2f2;}
+.review_table tr:nth-child(even){background-color: #f2f2f2;}  /* Grey background */
+
+.review_table tr:nth-child(odd){background-color: #fdf5e6;}  /* Previous background color */
 
 .review_table tr:hover {background-color: #ddd;}
 
